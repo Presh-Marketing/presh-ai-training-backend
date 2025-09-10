@@ -5,8 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from flask import Flask, send_from_directory, session
 from flask_cors import CORS
-from src.models.user import db
-from src.models.training import User, ModuleProgress, CertificationAttempt, LearningActivity
+from src.models.training import db, User, ModuleProgress, CertificationAttempt, LearningActivity
 from src.routes.user import user_bp
 from src.routes.training import training_bp
 from src.routes.auth import auth_bp, init_oauth
@@ -40,7 +39,7 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 
 # Database configuration
 # For production, use PostgreSQL or your preferred database
-DATABASE_URL = os.getenv('DATABASE_URL', f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}")
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:////tmp/app.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
