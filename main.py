@@ -18,6 +18,10 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'presh-ai-training-secret-key
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
+# Explicit cookie domain for rewrites/proxy scenarios (e.g., learn.presh.ai)
+session_cookie_domain = os.getenv('SESSION_COOKIE_DOMAIN')
+if session_cookie_domain:
+    app.config['SESSION_COOKIE_DOMAIN'] = session_cookie_domain
 
 # Enable CORS with credentials. Use explicit allowed origin for cookies.
 frontend_origin = os.getenv('FRONTEND_ORIGIN', '').strip()
