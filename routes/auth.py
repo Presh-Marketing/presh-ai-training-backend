@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, session, redirect, url_for
 from authlib.integrations.flask_client import OAuth
 from src.models.training import db, User, LearningActivity
 import os
+import os
 import secrets
 
 auth_bp = Blueprint('auth', __name__)
@@ -41,7 +42,12 @@ def login():
     session['oauth_state'] = state
     
     # Redirect to Google OAuth
-    redirect_uri = url_for('auth.callback', _external=True)
+    # Ensure callback uses the frontend origin so session cookies bind to the frontend domain
+    frontend_origin = os.getenv('FRONTEND_ORIGIN')
+    if frontend_origin:
+        redirect_uri = frontend_origin.rstrip('/') + url_for('auth.callback')
+    else:
+        redirect_uri = url_for('auth.callback', _external=True)
     return google.authorize_redirect(redirect_uri, state=state)
 
 @auth_bp.route('/callback', methods=['GET'])
