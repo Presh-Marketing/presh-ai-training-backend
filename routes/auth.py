@@ -10,8 +10,8 @@ auth_bp = Blueprint('auth', __name__)
 # OAuth configuration
 oauth = OAuth()
 
-# Allowed domain for Presh Marketing Solutions
-ALLOWED_DOMAIN = 'preshmarketingsolutions.com'
+# Allowed email domain (configurable via env)
+ALLOWED_DOMAIN = os.getenv('ALLOWED_DOMAIN', 'presh.ai')
 
 def init_oauth(app):
     oauth.init_app(app)
